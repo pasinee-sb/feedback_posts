@@ -96,19 +96,33 @@ def log_out():
     session.pop('username')
     flash("Bye!")
 
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/users/<username>')
 def show_info(username):
-    username = session.get('username')
+    # reveal personal info
 
+    if "username" not in session:
+        """check if anyone is logged in in session, send to log in page if none"""
+        flash("Please login first!", "danger")
+        return redirect('/login')
+    # if session is not empty, get username for the person in session
+    user_name = session.get('username')
+    # get the person in session's info from database
+    user_name_iden = User.query.filter_by(username=user_name).first()
+    # get the person's info in the url /users/<username> from database
     user = User.query.filter_by(username=username).first()
-    if username == user.username:
+
+    if user_name == user.username:
+        """if person in session is the same person in the url then continue"""
+
         return render_template('showinfo.html', user=user)
 
-    flash("Secret is lock", "danger")
-    return redirect(f"/users/{user.id}")
+    else:
+        """flash error message and redirect to the person in session's own page"""
+        flash("Secret is lock", "danger")
+        return redirect(f"/users/{user_name_iden.username}")
 
 
 @app.route('/users/<username>/delete', methods=['POST'])
@@ -123,15 +137,17 @@ def delete_user(username):
         return redirect("/")
 
     else:
-        return redirect(f"/users/{user.id}")
+        flash(f"You don't have the permission to delete")
+        return redirect(f"/users/{user.username}")
 
 
 @app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
 def add_feedback(username):
     user_name = session.get('username')
+    user = User.query.filter_by(username=username).first()
 
     # only user of current session can add feedback
-    if username == user_name:
+    if user.username == user_name:
         form = FeedbackForm()
 
         # run validation for post request, ig it a post request
