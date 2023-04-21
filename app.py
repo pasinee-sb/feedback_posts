@@ -102,10 +102,13 @@ def log_in():
 @app.route('/logout', methods=['POST'])
 def log_out():
 
-    session.pop('username')
-    flash("Bye!")
-
-    return redirect('/login')
+    if 'username' in session:
+        session.pop('username')
+        flash("Bye!", "success")
+        return redirect('/login')
+    else:
+        flash("You are not logged in")
+        return redirect('/login')
 
 
 @app.route('/users/<username>')
