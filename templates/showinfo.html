@@ -1,0 +1,53 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+
+<h1>Info revealed!</h1>
+
+<form style="display:inline;" action="/users/{{user.username}}/delete" method="POST">
+    <button class="btn btn-sm btn-danger"><i class="fas fa-trash">Delete user</i></button>
+  </form>
+<div class="card">
+    <div class="card-body">
+<h3>Username:</h3>
+<li>{{user.username}}</li>
+<h3>Name:</h3>
+<li>{{user.first_name}} {{user.last_name}}</li>
+<h3>Email:</h3>
+<li>{{user.email}}</li>
+
+<form style="display:inline;" action="/users/{{user.username}}/feedback/add" >
+<button class="btn btn-sm btn-primary"><i class="fas fa-plus-square">Add feedback</i></button>
+</form>
+
+</div>
+</div>
+
+{#sort feedback by id#}
+
+
+{%for feedback in user.feedbacks| sort (attribute="id")%}
+<div class="card-body">
+ <p>Feedback #{{feedback.id}}</p>  
+<span>Feedback title: {{feedback.title}}</span> <br>
+<span>Feedback content: {{feedback.content}}</span><br>
+<span>Feedback by: {{feedback.username}}</span><br>
+
+<form style="display:inline;" action="/feedback/{{feedback.id}}/delete" method="POST">
+    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+  </form>
+  <form style="display:inline;" action="/feedback/{{feedback.id}}/update">
+    <button class="btn btn-sm btn-success"><i class="far fa-edit"></i></button>
+  </form>
+
+  
+
+
+
+
+</div>
+{%endfor%}
+
+
+
+{% endblock %}
