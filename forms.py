@@ -8,9 +8,9 @@ class RegisterForm(FlaskForm):
                            InputRequired(), Length(max=20)])
     password = PasswordField("password", validators=[InputRequired()])
     email = EmailField("email", validators=[InputRequired(), Length(max=50)])
-    first_name = StringField("first Name", validators=[
+    first_name = StringField("First Name", validators=[
                              InputRequired(), Length(max=50)])
-    last_name = StringField("last Name", validators=[
+    last_name = StringField("Last Name", validators=[
                             InputRequired(), Length(max=50)])
 
 

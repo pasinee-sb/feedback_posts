@@ -4,14 +4,21 @@ from models import connect_db, db, User, Feedback
 from forms import RegisterForm, LogInForm, FeedbackForm
 from sqlalchemy.exc import IntegrityError
 import os
+import re
 
 app = Flask(__name__)
 app.app_context().push()
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'DATABASE_URL', "postgresql:///auth_exercise").replace("://", "ql://", 1)
+uri = os.environ.get('DATABASE_URL', 'postgresql:///auth_exercise')
+
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'hello!123')
+
+# rest of connection code using the connection string `uri`
 app.config["HEROKU_EXEC_DEBUG"] = os.environ.get('HEROKU_EXEC_DEBUG', '1')
 print('###############')
 print(app.config["SECRET_KEY"])
