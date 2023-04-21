@@ -12,6 +12,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'hello!123')
+app.config["HEROKU_EXEC_DEBUG"] = os.environ.get('HEROKU_EXEC_DEBUG', '1')
 print('###############')
 print(app.config["SECRET_KEY"])
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
