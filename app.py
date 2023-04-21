@@ -28,9 +28,6 @@ app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 # connect to database
 connect_db(app)
 
-# create table in database
-db.create_all()
-
 
 @app.route('/')
 def home():
