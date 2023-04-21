@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 app.app_context().push()
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    'HEROKU_POSTGRESQL_CYAN_URL', "postgresql:///auth_exercise")
+    'DATABASE_URL', "postgresql:///auth_exercise")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'hello!123')
