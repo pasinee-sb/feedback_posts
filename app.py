@@ -8,23 +8,21 @@ import re
 
 app = Flask(__name__)
 with app.app_context():
-    
+
     uri = os.environ.get('DATABASE_URL', 'postgresql:///auth_exercise')
 
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'hello!123')
-
-# rest of connection code using the connection string `uri`
-app.config["HEROKU_EXEC_DEBUG"] = os.environ.get('HEROKU_EXEC_DEBUG', '1')
-print('###############')
-print(app.config["SECRET_KEY"])
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'hello!123')
+    app.config["HEROKU_EXEC_DEBUG"] = int(
+        os.environ.get('HEROKU_EXEC_DEBUG', 1))
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    app.config.update(SESSION_COOKIE_SAMESITE="None",
+                      SESSION_COOKIE_SECURE=True)
 
 # connect to database
 connect_db(app)
