@@ -7,8 +7,9 @@ import os
 import re
 
 app = Flask(__name__)
-app.app_context().push()
-uri = os.environ.get('DATABASE_URL', 'postgresql:///auth_exercise')
+with app.app_context():
+    
+    uri = os.environ.get('DATABASE_URL', 'postgresql:///auth_exercise')
 
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
